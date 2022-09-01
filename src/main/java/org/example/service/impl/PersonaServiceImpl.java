@@ -1,17 +1,28 @@
 package org.example.service.impl;
 
 import org.example.configuration.ConnectionDB;
+import org.example.constants.Constants;
 import org.example.dto.request.PersonaRequest;
 import org.example.dto.response.PersonaResponse;
 import org.example.entity.Persona;
 import org.example.mapper.PersonaMapperImpl;
 import org.example.service.IPersonaService;
-import java.util.Arrays;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PersonaServiceImpl implements IPersonaService {
 
     private ConnectionDB conexionDB;
+
+    private Connection conn;
+
+    private PreparedStatement stmt;
+
+    private ResultSet rs;
 
     @Override
     public PersonaResponse createPersona(PersonaRequest request) {
@@ -27,21 +38,37 @@ public class PersonaServiceImpl implements IPersonaService {
 
     @Override
     public List<PersonaResponse> readPersona() {
-        PersonaResponse response1 = PersonaResponse.builder()
-                .idPersona((int)(Math.random() * 100))
-                .nombre("Jose")
-                .apellido("Felix")
-                .edad("40")
-                .build();
-        PersonaResponse response2 = PersonaResponse.builder()
-                .idPersona((int)(Math.random() * 100))
-                .nombre("Nicola")
-                .apellido("Tesla")
-                .edad("81")
-                .build();
+        conexionDB = new ConnectionDB();
 
-        List<PersonaResponse> listPersona = Arrays.asList(response1, response2);
-        return listPersona;
+        Persona persona = null;
+        List<PersonaResponse> personas = new ArrayList<>();
+
+        try {
+            conn = conexionDB.getConnection();
+            stmt = conn.prepareStatement(Constants.SQL_SELECT_PERSON);
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                int id = rs.getInt("id_persona");
+                String nombre = rs.getString("nombre");
+                String apellido = rs.getString("apellido");
+                String edad = rs.getString("edad");
+
+                persona = new Persona(id, nombre, apellido, edad);
+                personas.add(PersonaMapperImpl.convertEntityToDto(persona));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                conexionDB.close(rs);
+                conexionDB.close(stmt);
+                conexionDB.close(conn);
+            } catch (SQLException ex) {
+                ex.printStackTrace(System.out);
+            }
+        }
+        return personas;
     }
 
     @Override
