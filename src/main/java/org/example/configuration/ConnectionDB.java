@@ -21,8 +21,8 @@ public class ConnectionDB {
         smtm.close();
     }
 
-    public void close(PreparedStatement smtm) throws SQLException {
-        smtm.close();
+    public void close(PreparedStatement stmt) throws SQLException {
+        stmt.close();
     }
 
     public void close(Connection conn) throws SQLException{

@@ -11,7 +11,7 @@ public class PersonaController {
 
     private IPersonaService personaService = new PersonaServiceImpl();
 
-    public PersonaResponse createPersona(PersonaRequest request) {
+    public Integer createPersona(PersonaRequest request) {
         return personaService.createPersona(request);
     }
 
@@ -19,7 +19,7 @@ public class PersonaController {
         return personaService.readPersona();
     }
 
-    public PersonaResponse updatePersona(Integer id, PersonaRequest request) {
+    public Integer updatePersona(Integer id, PersonaRequest request) {
         return personaService.updatePersona(id, request);
     }
 

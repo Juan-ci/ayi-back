@@ -7,10 +7,12 @@ import org.example.dto.response.PersonaResponse;
 import org.example.entity.Persona;
 import org.example.mapper.PersonaMapperImpl;
 import org.example.service.IPersonaService;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,22 +20,61 @@ public class PersonaServiceImpl implements IPersonaService {
 
     private ConnectionDB conexionDB;
 
+    private ConnectionDB conexionDBAux;
+
     private Connection conn;
+
+    private Connection connAux;
 
     private PreparedStatement stmt;
 
+    private PreparedStatement stmtAux;
+
     private ResultSet rs;
 
-    @Override
-    public PersonaResponse createPersona(PersonaRequest request) {
-        Persona entity = Persona.builder()
-                .idPersona((int) (Math.random() * 100))
-                .nombre(request.getNombre())
-                .apellido(request.getApellido())
-                .edad(request.getEdad())
-                .build();
+    private ResultSet rsAux;
 
-        return PersonaMapperImpl.convertEntityToDto(entity);
+    @Override
+    public Integer createPersona(PersonaRequest request) {
+        ResultSet rs = null;
+        conexionDB = new ConnectionDB();
+        conn = null;
+        stmt = null;
+        int indInsert = 0, risultato = 0;
+
+        try {
+            conn = conexionDB.getConnection();
+            stmt = conn.prepareStatement(Constants.SQL_INSERT_PERSON, Statement.RETURN_GENERATED_KEYS);
+
+            stmt.setString(1, request.getNombre());
+            stmt.setString(2, request.getApellido());
+            stmt.setString(3, request.getEdad());
+
+            indInsert = stmt.executeUpdate();
+
+            rs = stmt.getGeneratedKeys();
+            if (rs.next()){
+                risultato=rs.getInt(1);
+            }
+            System.out.println("ID RECUPERADO: " + risultato);
+            if (indInsert == 0) {
+                throw new RuntimeException();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (RuntimeException ex) {
+            throw new RuntimeException("Error al insertar datos a la BD.");
+        } finally {
+            try {
+                conexionDB.close(rs);
+                conexionDB.close(stmt);
+                conexionDB.close(conn);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        return indInsert;
     }
 
     @Override
@@ -72,19 +113,119 @@ public class PersonaServiceImpl implements IPersonaService {
     }
 
     @Override
-    public PersonaResponse updatePersona(Integer id, PersonaRequest request) {
-        Persona entity = Persona.builder()
-                .idPersona(id)
-                .nombre(request.getNombre())
-                .apellido(request.getApellido())
-                .edad(request.getEdad())
-                .build();
+    public Integer updatePersona(Integer id, PersonaRequest request) {
+        PreparedStatement statementGet = null;
+        conexionDB = new ConnectionDB();
 
-        return PersonaMapperImpl.convertEntityToDto(entity);
+        stmt = null;
+        int indInsert = 0, getPersona = 0;
+
+        try {
+            getPersona = getPersonaById(id);
+
+            if (getPersona == 0) {
+                throw  new RuntimeException("Error al get");
+            }
+            conn = conexionDB.getConnection();
+            stmt = conn.prepareStatement(Constants.SQL_UPDATE_PERSON);
+
+            stmt.setString(1, request.getNombre());
+            stmt.setString(2, request.getApellido());
+            stmt.setString(3, request.getEdad());
+            stmt.setInt(4, id);
+
+            indInsert = stmt.executeUpdate();
+
+            if (indInsert == 0) {
+                throw new RuntimeException();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (RuntimeException ex) {
+            throw new RuntimeException(ex.getMessage());
+        } finally {
+            try {
+                if (stmt != null) {
+                    conexionDB.close(stmt);
+                    conexionDB.close(conn);
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        return indInsert;
     }
 
     @Override
     public void deletePersona(Integer id) {
-        System.out.println("Borrando datos de persona con id: " + id);
+        PreparedStatement statementGet = null;
+        conexionDB = new ConnectionDB();
+
+        stmt = null;
+        int indInsert = 0, getPersona = 0;
+
+        try {
+            getPersona = getPersonaById(id);
+
+            if (getPersona == 0) {
+                throw  new RuntimeException("Error al get");
+            }
+            conn = conexionDB.getConnection();
+            stmt = conn.prepareStatement(Constants.SQL_DELETE_PERSON);
+            stmt.setInt(1, id);
+
+            indInsert = stmt.executeUpdate();
+
+            if (indInsert == 0) {
+                throw new RuntimeException();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (RuntimeException ex) {
+            throw new RuntimeException(ex.getMessage());
+        } finally {
+            try {
+                if (stmt != null) {
+                    conexionDB.close(stmt);
+                    conexionDB.close(conn);
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        System.out.println("Id " + id + " borrado exitosamente.");
+    }
+
+    public Integer getPersonaById(Integer id) {
+        conexionDBAux = new ConnectionDB();
+        int response = 0;
+
+        try {
+            connAux = conexionDBAux.getConnection();
+            stmtAux = connAux.prepareStatement(Constants.SQL_SELECT_PERSON_BY_ID);
+            stmtAux.setInt(1, id);
+            rsAux = stmtAux.executeQuery();
+
+            if (!rsAux.next()) {
+                throw new RuntimeException("Error al hacer el get.");
+            } else {
+                response = 1;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try{
+                if (rsAux != null) {
+                    conexionDBAux.close(rsAux);
+                    conexionDBAux.close(stmtAux);
+                    conexionDBAux.close(connAux);
+                }
+            } catch (SQLException ex) {
+                throw new RuntimeException("Error al cerrar las conexiones");
+            }
+        }
+        return response;
     }
 }

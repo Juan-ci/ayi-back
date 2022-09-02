@@ -19,28 +19,28 @@ public class Main {
         PersonaController personaController = new PersonaController();
 
         PersonaRequest request = PersonaRequest.builder()
-                .nombre("Juanito")
-                .apellido("Cebal")
+                .nombre("Silvia")
+                .apellido("Otaka")
                 .edad("25")
                 .build();
 
         System.out.println("<--- PERSONA --->");
 
-        PersonaResponse personaCreated = personaController.createPersona(request);
-        System.out.println("PERSONA CREADA: " + personaCreated.toString());
+        Integer personaCreated = personaController.createPersona(request);
+        System.out.println("PERSONA CREADA: " + personaCreated);
+
+        PersonaRequest updatePersona = PersonaRequest.builder()
+                .nombre("Cristiano")
+                .apellido("Ronaldo")
+                .edad("40")
+                .build();
+        Integer personaUpdated = personaController.updatePersona(2, updatePersona);
+        System.out.println("PERSONA UPDATED: " + personaUpdated);
+
+        personaController.deletePersona(1);
 
         List<PersonaResponse> listPersonas = personaController.getPersona();
         System.out.println("LISTA PERSONA: " + listPersonas.toString());
-
-        PersonaRequest updatePersona = PersonaRequest.builder()
-                .nombre("Alphie")
-                .apellido("Salomons")
-                .edad("45")
-                .build();
-        PersonaResponse personaUpdated = personaController.updatePersona(1, updatePersona);
-        System.out.println("PERSONA UPDATED: " + personaUpdated.toString());
-
-        personaController.deletePersona(1);
 
         /*  <--- CLIENTE --->   */
 

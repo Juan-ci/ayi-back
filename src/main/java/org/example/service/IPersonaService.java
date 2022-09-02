@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface IPersonaService {
 
-    PersonaResponse createPersona(PersonaRequest request);
+    Integer createPersona(PersonaRequest request);
 
     List<PersonaResponse> readPersona();
 
-    PersonaResponse updatePersona(Integer id, PersonaRequest request);
+    Integer updatePersona(Integer id, PersonaRequest request);
 
     void deletePersona(Integer id);
 }

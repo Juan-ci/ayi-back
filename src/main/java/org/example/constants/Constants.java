@@ -6,6 +6,7 @@ public class Constants {
      */
     //    <---- PERSONA ---->
     public static final String SQL_SELECT_PERSON = "SELECT id_persona, nombre, apellido, edad FROM personas";
+    public static final String SQL_SELECT_PERSON_BY_ID = "SELECT id_persona FROM personas WHERE id_persona = ?";
     public static final String SQL_INSERT_PERSON = "INSERT INTO personas(nombre, apellido, edad) VALUES(?, ?, ?)";
     public static final String SQL_UPDATE_PERSON = "UPDATE personas SET nombre = ?, apellido = ?, edad = ? WHERE id_persona = ?";
     public static final String SQL_DELETE_PERSON = "DELETE FROM personas WHERE id_persona = ?";
