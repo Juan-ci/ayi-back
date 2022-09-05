@@ -51,7 +51,7 @@ public class Main {
 
         System.out.println("<--- CLIENTE --->");
 
-        ClienteResponse createdClient = clienteController.createCliente(clienteRequest);
+        Integer createdClient = clienteController.createCliente(clienteRequest);
         System.out.println("Cliente creado: " + createdClient.toString());
 
         List<ClienteResponse> listClient = clienteController.getClientes();
@@ -60,7 +60,7 @@ public class Main {
         ClienteRequest clienteRequestUpdated = new ClienteRequest();
         clienteRequestUpdated.setVip("NOT-VIP");
 
-        ClienteResponse updatedClient = clienteController.updateCliente(1, clienteRequestUpdated);
+        Integer updatedClient = clienteController.updateCliente(1, clienteRequestUpdated);
         System.out.println("Cliente modificado: " + updatedClient.toString());
 
         clienteController.deleteCliente(1);

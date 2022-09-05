@@ -11,7 +11,7 @@ public class ClienteController {
 
     private IClienteService clienteService = new ClienteServiceImpl();
 
-    public ClienteResponse createCliente(ClienteRequest request) {
+    public Integer createCliente(ClienteRequest request) {
         return clienteService.createCliente(request);
     }
 
@@ -19,7 +19,7 @@ public class ClienteController {
         return clienteService.readCliente();
     }
 
-    public ClienteResponse updateCliente(Integer id, ClienteRequest request) {
+    public Integer updateCliente(Integer id, ClienteRequest request) {
 
         return clienteService.updateCliente(id, request);
     }

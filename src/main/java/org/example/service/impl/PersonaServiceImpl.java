@@ -40,7 +40,7 @@ public class PersonaServiceImpl implements IPersonaService {
         conexionDB = new ConnectionDB();
         conn = null;
         stmt = null;
-        int indInsert = 0, risultato = 0;
+        int indInsert = 0, idGenerated = 0;
 
         try {
             conn = conexionDB.getConnection();
@@ -54,9 +54,9 @@ public class PersonaServiceImpl implements IPersonaService {
 
             rs = stmt.getGeneratedKeys();
             if (rs.next()){
-                risultato=rs.getInt(1);
+                idGenerated = rs.getInt(1);
             }
-            System.out.println("ID RECUPERADO: " + risultato);
+            System.out.println("ID RECUPERADO: " + idGenerated);
             if (indInsert == 0) {
                 throw new RuntimeException();
             }
@@ -74,7 +74,7 @@ public class PersonaServiceImpl implements IPersonaService {
             }
         }
 
-        return indInsert;
+        return idGenerated;
     }
 
     @Override

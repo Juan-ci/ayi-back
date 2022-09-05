@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface IClienteService {
 
-    ClienteResponse createCliente(ClienteRequest request);
+    Integer createCliente(ClienteRequest request);
 
     List<ClienteResponse> readCliente();
 
-    ClienteResponse updateCliente(Integer id, ClienteRequest request);
+    Integer updateCliente(Integer id, ClienteRequest request);
 
     void deleteCliente(Integer id);
 }

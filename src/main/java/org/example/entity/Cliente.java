@@ -14,4 +14,6 @@ public class Cliente extends Persona {
     private Integer idCliente;
 
     private String vip;
+
+    private Persona idPersona;
 }
