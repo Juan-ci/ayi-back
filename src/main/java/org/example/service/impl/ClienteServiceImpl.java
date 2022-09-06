@@ -112,7 +112,7 @@ public class ClienteServiceImpl implements IClienteService {
 
     @Override
     public Integer updateCliente(Integer id, ClienteRequest request) {
-        Cliente entity = Cliente.builder().idCliente(id).vip(request.getVip()).build();
+
 
         return 0;
     }
