@@ -4,14 +4,17 @@ import org.example.dto.request.ClienteRequest;
 import org.example.dto.response.ClienteResponse;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IClienteService {
 
-    Integer createCliente(ClienteRequest request);
+    void createCliente(ClienteRequest request);
 
     List<ClienteResponse> readCliente();
 
-    Integer updateCliente(Integer id, ClienteRequest request);
+    void updateCliente(Long id, ClienteRequest request);
 
-    void deleteCliente(Integer id);
+    void deleteCliente(Long id);
+
+    ClienteResponse getById(Long id);
 }
