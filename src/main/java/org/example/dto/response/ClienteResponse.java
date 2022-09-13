@@ -10,8 +10,8 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
-@ToString(callSuper = true)
-public class ClienteResponse  extends PersonaResponse {
+@ToString
+public class ClienteResponse {
 
     private Integer idCliente;
 

@@ -1,12 +1,11 @@
 package org.example.dto.request;
 
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -20,5 +19,5 @@ public class ClienteRequest {
 
     private String formaPago;
 
-    private LocalDate fechaCreacion;
+    private List<AddressDto> direcciones;
 }

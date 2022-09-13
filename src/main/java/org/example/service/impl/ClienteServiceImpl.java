@@ -4,7 +4,7 @@ import jakarta.persistence.EntityManager;
 import org.example.dto.request.ClienteRequest;
 import org.example.dto.response.ClienteResponse;
 import org.example.entity.Cliente;
-import org.example.mapper.ClienteMapperImpl;
+import org.example.dto.request.mapper.ClienteMapperImpl;
 import org.example.repository.IClienteRepository;
 import org.example.repository.impl.ClienteRepositoryImpl;
 import org.example.service.IClienteService;
@@ -30,8 +30,11 @@ public class ClienteServiceImpl implements IClienteService {
             Cliente entity = ClienteMapperImpl.convertEntityToDto(request);
 
             em.getTransaction().begin();
-            clientRepository.save(entity);
+            em.persist(entity);
+
             em.getTransaction().commit();
+
+            System.out.println(entity);
         } catch (Exception e) {
             em.getTransaction().rollback();
             System.out.println(e.getMessage());
