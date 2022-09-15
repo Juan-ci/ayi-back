@@ -20,4 +20,5 @@ public class ClienteRequest {
     private String formaPago;
 
     private List<AddressDto> direcciones;
+
 }

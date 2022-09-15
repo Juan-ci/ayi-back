@@ -1,6 +1,4 @@
 
-g
-7src/main/java/org/example/mapper/ClienteMapperImpl.java,4\3\43719696359c22c571b96fd4a88b39131618546b
 f
 6src/main/java/org/example/service/IClienteService.java,7\5\752edaca6bbde5833515df806d15e4099595150b
 f
@@ -9,5 +7,19 @@ l
 <src/main/java/org/example/repository/IClienteRepository.java,e\6\e67e50c952267c7dccf75c5902bd44e530f91f02
 t
 Dsrc/main/java/org/example/repository/impl/ClienteRepositoryImpl.java,5\5\55eed03dad3d2ad92f0ce4f2914ff877c0cd59dd
+e
+5src/main/java/org/example/dto/request/AddressDto.java,5\2\52f11fbd78ab7bc5c662b0f41fbed8b200175873
+k
+;src/main/java/org/example/dto/response/ClienteResponse.java,5\c\5c3c90c6e195257192c3b71d6051a53f1383d67e
+]
+-src/main/java/org/example/entity/Address.java,3\e\3e81a0371f82bdb0e7e62000dac6ea9f609f039b
 k
 ;src/main/java/org/example/controller/ClienteController.java,4\0\40f68ca3551f00038552d170e823843faecd7d08
+s
+Csrc/main/java/org/example/dto/request/mapper/ClienteMapperImpl.java,e\4\e42faf155be7222a4884a73e4295e2f7bf966abb
+n
+>src/main/java/org/example/service/impl/ClienteServiceImpl.java,b\7\b7f422246d054be8b1e9b5d9edcd13e3b9c4dc5d
+S
+#src/main/java/org/example/Main.java,0\b\0ba1b9c7a4878802f938e331cc2d8a042087ec6b
+i
+9src/main/java/org/example/dto/request/ClienteRequest.java,d\0\d0e608ffa461241d1f92f107beb1edf2237c8129

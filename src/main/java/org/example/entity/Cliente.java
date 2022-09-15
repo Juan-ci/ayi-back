@@ -1,9 +1,12 @@
 package org.example.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,7 +19,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import java.util.List;
 
 @Data
@@ -24,7 +26,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
-@ToString
+@JsonIgnoreProperties("facturas")
 @Table(name = "cliente")
 public class Cliente {
 
@@ -39,6 +41,9 @@ public class Cliente {
     @Column(name = "apellido")
     private String apellido;
 
+    @Column(name = "forma_pago")
+    private String formaPago;
+
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(name = "tbl_cliente_direccion",
             joinColumns = @JoinColumn(name = "id_cliente"),
@@ -48,6 +53,22 @@ public class Cliente {
     )
     private List<Address> direcciones;
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "cliente", fetch = FetchType.LAZY)
+    @JsonManagedReference(value = "facturas")
+    private List<Factura> facturas;
+
     @Embedded
     private Audit audit = new Audit();
+
+    @Override
+    public String toString() {
+        return "Cliente{" +
+                "idCliente=" + idCliente +
+                ", nombre='" + nombre + '\'' +
+                ", apellido='" + apellido + '\'' +
+                ", direcciones=" + direcciones +
+                ", cliente=" + facturas +
+                ", audit=" + audit +
+                '}';
+    }
 }
