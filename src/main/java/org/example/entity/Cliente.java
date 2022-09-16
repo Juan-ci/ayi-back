@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
@@ -28,7 +29,7 @@ import java.util.List;
 @Entity
 @JsonIgnoreProperties("facturas")
 @Table(name = "cliente")
-public class Cliente {
+public class Cliente{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,6 +57,9 @@ public class Cliente {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "cliente", fetch = FetchType.LAZY)
     @JsonManagedReference(value = "facturas")
     private List<Factura> facturas;
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "cliente")
+    private ClienteDetalle clienteDetalle;
 
     @Embedded
     private Audit audit = new Audit();

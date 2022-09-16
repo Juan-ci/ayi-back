@@ -4,22 +4,17 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
 @ToString
 @Embeddable
 public class Audit {
 
     @Column(name = "date_created")
-    private LocalDateTime dateCreated;
+    private LocalDate dateCreated;
 
     @Column(name = "date_updated")
     private LocalDateTime dateUpdated;
@@ -27,7 +22,7 @@ public class Audit {
     @PrePersist
     public void prePersist() {
         System.out.println("inicializar algo justo antes del persist");
-        this.dateCreated = LocalDateTime.now();
+        this.dateCreated = LocalDate.now();
     }
 
     @PreUpdate
@@ -36,11 +31,11 @@ public class Audit {
         this.dateUpdated = LocalDateTime.now();
     }
 
-    public LocalDateTime getDateCreated() {
+    public LocalDate getDateCreated() {
         return dateCreated;
     }
 
-    public void setDateCreated(LocalDateTime dateCreated) {
+    public void setDateCreated(LocalDate dateCreated) {
         this.dateCreated = dateCreated;
     }
 
